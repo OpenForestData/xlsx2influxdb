@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+    influxdb:
+        container_name: influxdb
+        image: influxdb
+        volumes:
+            - influxdb-lib:/var/lib/influxdb
+        environment: 
+            - INFLUXDB_REPORTING_DISABLED=false
+            - INFLUXDB_ADMIN_USER=data
+            - INFLUXDB_ADMIN_PASSWORD=data
+            - INFLUXDB_USER=data
+            - INFLUXDB_USER_PASSWORD=data
+            - INFLUXDB_DB=data
+        ports:
+            - 8086:8086
+        privileged: true
+        networks: 
+            - influx_grafana
+
+    grafana:
+        image: grafana/grafana:latest
+        ports:
+            - '3000:3000'
+        volumes:
+            - grafana-storage:/var/lib/grafana
+        depends_on:
+            - influxdb
+        environment:
+            - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+            - GF_SECURITY_ADMIN_USER=test
+            - GF_SECURITY_ADMIN_PASSWORD=test
+        networks: 
+            - influx_grafana
+
+volumes: 
+    influxdb-lib:
+    grafana-storage:
+
+networks:
+  influx_grafana:
