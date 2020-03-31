@@ -47,7 +47,6 @@ def isinteger(value):
             return False
 
 
-
 ##
 ## Open Excel file (examples on Google Drive) and prepare it for upload
 ##
