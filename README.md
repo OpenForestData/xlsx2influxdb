@@ -6,9 +6,10 @@ Python 3.8
 
 ### Wykorzystanie
 
-Aby uruchomić influxdb oraz grafanę:  
+Aby uruchomić całość:  
 ```
 $ docker-compose pull
+$ docker-compose build
 $ docker-compose up
 ```
 
@@ -20,7 +21,7 @@ Instalacja requirements.txt:
 pip install -r requirements.txt
 ```
 
-Przykłady wykorzystaina skryptu:
+Przykłady wykorzystaina skryptu (bez dockera):
 ```
 $ python csv-to-influxdb.py --input dane_meteo_2011_05_Bialowieza.xlsx --dbname csv --create --timecolumn data/godzina -tf "%Y-%m-%d %H:%M:%S" -d ";"
 ```

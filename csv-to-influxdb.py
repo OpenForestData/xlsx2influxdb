@@ -54,7 +54,7 @@ def convertAndPrepareToCsv(inputfilename):
     Xlsx2csv(inputfilename, outputencoding="cp1250")\
         .convert("temp.csv")
 
-    with open('temp.csv', 'r') as file_r, open("file_"+datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")+".csv", 'w') as file_w:
+    with open('temp.csv', 'r',encoding='ISO-8859-1') as file_r, open("file_"+datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")+".csv", 'w') as file_w:
         for line in file_r:
             line = line.split(',')
             line[0] = re.sub("'", '', line[0])

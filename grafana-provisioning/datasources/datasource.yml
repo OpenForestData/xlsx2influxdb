@@ -3,7 +3,7 @@ datasources:
   - name: InfluxDB
     type: influxdb
     access: proxy
-    database: csv
+    database: data
     user: data
     password: data
     url: http://influxdb:8086

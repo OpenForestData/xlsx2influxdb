@@ -10,7 +10,7 @@ do
             DBNAME)              DBNAME=${VALUE} ;;
             INPUT)    INPUT=${VALUE} ;;     
             TIMECOLUMN)    INPUT=${VALUE} ;;
-            DELIMITER)    INPUT=${VALUE} ;;
+            SERVER)    INPUT=${VALUE} ;;
             *)   
     esac    
 
@@ -21,10 +21,10 @@ echo "=== Parametry ==="
 echo "DBNAME = $DBNAME"
 echo "INPUT = $INPUT" 
 echo "TIMECOLUMN = $TIMECOLUMN" 
-echo "DELIMITER = $DELIMITER" 
+echo "SERVER = $SERVER"
 echo "================="
 
 
 /app/wait-for-it.sh influxdb:8086 -t 15 -- echo "Database is up!"
 
-python /app/csv-to-influxdb.py --dbname $DBNAME --input $INPUT --timecolumn $TIMECOLUMN -d \"$DELIMITER\" --fieldcolumns "wilg,temp >2m,ciś,opad,nasłon,temp < 2m,pokrywa śnieżna,temp <2m min,temp <2m max,Vwmax,Vwsr,Vwmin,kierunek wsr,kierunek wmax,kierunek wmin" --timeformat "%Y-%m-%d %H:%M:%S"
+python /app/csv-to-influxdb.py --server $SERVER --dbname $DBNAME --input $INPUT --timecolumn $TIMECOLUMN -d ";" --fieldcolumns "wilg,temp >2m,ciś,opad,nasłon,temp < 2m,pokrywa śnieżna,temp <2m min,temp <2m max,Vwmax,Vwsr,Vwmin,kierunek wsr,kierunek wmax,kierunek wmin" --timeformat "%Y-%m-%d %H:%M:%S"
