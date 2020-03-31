@@ -12,7 +12,7 @@ $ docker-compose pull
 $ docker-compose up
 ```
 
-Użytkownik na grafanę:  
+Użytkownik na grafanę (http://localhost:3000/):  
 test/test
 
 Instalacja requirements.txt:  
