@@ -1,6 +1,8 @@
 # Xslx 2 influxdb
 
-W zasadzie szkic skryptu wrzucającego dane. Do poprawy.
+W zasadzie szkic skryptu wrzucającego dane. Do poprawy.  
+
+Python 3.8
 
 ### Wykorzystanie
 
@@ -12,6 +14,11 @@ $ docker-compose up
 
 Użytkownik na grafanę:  
 test/test
+
+Instalacja requirements.txt:  
+```
+pip install -r requirements.txt
+```
 
 Przykłady wykorzystaina skryptu:
 ```
