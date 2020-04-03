@@ -44,6 +44,7 @@ services:
             - INPUT=/app/dane_meteo_2011_05_Bialowieza.xlsx
             - TIMECOLUMN=data/godzina
             - SERVER=influxdb:8086
+            - TIME_SECCONDS=60
         depends_on:
             - influxdb
         networks: 
@@ -54,4 +55,4 @@ volumes:
     grafana-storage:
 
 networks:
-  influx_grafana:
+    influx_grafana:
