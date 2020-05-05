@@ -2,7 +2,7 @@ image: python:3.8-slim
 
 Build docker dev image:
     image: 
-        name: gcr.io/kaniko-project/executor:debug
+        name: gcr.io/kaniko-project/executor:debug-v0.19.0
         entrypoint: [""]
     before_script:
         - echo "pass"
@@ -15,7 +15,7 @@ Build docker dev image:
 
 Build docker master image:
     image: 
-        name: gcr.io/kaniko-project/executor:debug
+        name: gcr.io/kaniko-project/executor:debug-v0.19.0
         entrypoint: [""]
     before_script:
         - echo "pass"
