@@ -1,59 +1,85 @@
 version: '3.7'
 
 services:
-    influxdb:
-        container_name: influxdb
-        image: influxdb
-        volumes:
-            - influxdb-lib:/var/lib/influxdb
-        environment: 
-            - INFLUXDB_REPORTING_DISABLED=false
-            - INFLUXDB_ADMIN_USER=data
-            - INFLUXDB_ADMIN_PASSWORD=data
-            - INFLUXDB_USER=data
-            - INFLUXDB_USER_PASSWORD=data
-            - INFLUXDB_DB=data
-        ports:
-            - 8086:8086
-        privileged: true
-        networks: 
-            - influx_grafana
+  influxdb:
+    container_name: influxdb
+    image: influxdb
+    volumes:
+      - influxdb-lib:/var/lib/influxdb
+    environment:
+      - INFLUXDB_REPORTING_DISABLED=false
+      - INFLUXDB_ADMIN_USER=data
+      - INFLUXDB_ADMIN_PASSWORD=data
+      - INFLUXDB_USER=data
+      - INFLUXDB_USER_PASSWORD=data
+      - INFLUXDB_DB=data
+    ports:
+      - 8086:8086
+    privileged: true
+    networks:
+      - influx_grafana
 
-    grafana:
-        container_name: grafana
-        image: grafana/grafana:latest
-        ports:
-            - '3000:3000'
-        volumes:
-            - grafana-storage:/var/lib/grafana
-            - ./grafana-provisioning/:/etc/grafana/provisioning
-            - ./grafana.ini:/etc/grafana/grafana.ini
-        depends_on:
-            - influxdb
-        environment:
-            - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
-            - GF_SECURITY_ADMIN_USER=test
-            - GF_SECURITY_ADMIN_PASSWORD=test
-        networks: 
-            - influx_grafana
-            
-    xlsx2influxdb:
-        container_name: xlsx2influxdb
-        build: .
-        environment: 
-            - DBNAME=data
-            - INPUT=/app/dane_meteo_2011_05_Bialowieza.xlsx
-            - TIMECOLUMN=data/godzina
-            - SERVER=influxdb:8086
-            - TIME_SECCONDS=60
-        depends_on:
-            - influxdb
-        networks: 
-            - influx_grafana
+  chronograph:
+    container_name: chronograf
+    image: chronograf
+    environment:
+      - influxdb-url=http://influxdb:8086
+    ports:
+      - 8888:8888
+    networks:
+      - influx_grafana
 
-volumes: 
-    influxdb-lib:
-    grafana-storage:
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana-provisioning/:/etc/grafana/provisioning
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    depends_on:
+      - influxdb
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+      - GF_SECURITY_ADMIN_USER=test
+      - GF_SECURITY_ADMIN_PASSWORD=test
+    networks:
+      - influx_grafana
+
+  xlsx2influxdb: &xlsx2influxdb
+    container_name: xlsx2influxdb
+    build: .
+    environment:
+      - DBNAME=data
+      - SQLITE_DB_NAME=data
+      - INPUT=/app/dane_meteo_2011_05_Bialowieza.csv
+      - TIMECOLUMN=data/godzina
+      - SERVER=influxdb:8086
+      - TIME_SECCONDS=60
+    depends_on:
+      - influxdb
+    networks:
+      - influx_grafana
+
+  redis:
+    container_name: "redis"
+    image: "redis:alpine"
+    restart: unless-stopped
+    networks:
+      - influx_grafana
+
+  celery:
+    <<: *xlsx2influxdb
+    image: "celery"
+    container_name: "celery"
+    labels: []
+    command: 'bash -c "/app/docker/entrypoint-celery.sh"'
+
+
+volumes:
+  influxdb-lib:
+  grafana-storage:
 
 networks:
-    influx_grafana:
+  influx_grafana:

@@ -1,27 +1,27 @@
 image: python:3.8-slim
 
 Build docker dev image:
-    image: 
-        name: gcr.io/kaniko-project/executor:debug-v0.19.0
-        entrypoint: [""]
-    before_script:
-        - echo "pass"
-    stage: build
-    script:
-        - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"gitlab-ci-token\",\"password\":\"$CI_JOB_TOKEN\"}}}" > /kaniko/.docker/config.json
-        - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
-    except:
-        - master
+  image:
+    name: gcr.io/kaniko-project/executor:debug-v0.19.0
+    entrypoint: [""]
+  before_script:
+    - echo "pass"
+  stage: build
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"gitlab-ci-token\",\"password\":\"$CI_JOB_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+  except:
+    - master
 
 Build docker master image:
-    image: 
-        name: gcr.io/kaniko-project/executor:debug-v0.19.0
-        entrypoint: [""]
-    before_script:
-        - echo "pass"
-    stage: build
-    script:
-        - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"gitlab-ci-token\",\"password\":\"$CI_JOB_TOKEN\"}}}" > /kaniko/.docker/config.json
-        - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG --destination $CI_REGISTRY_IMAGE:latest
-    only:
-        - master
+  image:
+    name: gcr.io/kaniko-project/executor:debug-v0.19.0
+    entrypoint: [""]
+  before_script:
+    - echo "pass"
+  stage: build
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"gitlab-ci-token\",\"password\":\"$CI_JOB_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG --destination $CI_REGISTRY_IMAGE:latest
+  only:
+    - master

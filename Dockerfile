@@ -8,7 +8,9 @@ COPY . /app
 
 RUN pip install -r /app/requirements.txt
 
-RUN chmod +x /app/wait-for-it.sh
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/docker/wait-for-it.sh
+RUN chmod +x /app/docker/entrypoint.sh
+#RUN chmod +x /app/docker/entrypoint-celery.sh
 
-CMD ["./entrypoint.sh"]
+CMD ["./docker/entrypoint.sh"]
+
