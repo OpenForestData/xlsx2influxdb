@@ -1,31 +1,33 @@
-# Xslx 2 influxdb
+# XLS2InfluxDB
+This application drops data from an XLS to InfluxDB file, heavily based on https://github.com/fabio-miranda/csv-to-influxdb/blob/master/csv-to-influxdb.py.
 
-W zasadzie szkic skryptu wrzucającego dane. Do poprawy.  
+## Installation
 
-Python 3.8
+### Requirements
+All requirements all stored in requirements.txt file.
 
-### Wykorzystanie
+To run in container environment you need to install docker and docker-compose.
 
-Aby uruchomić całość:  
+### Application external dependencies
+- InfluxDB ➤ https://www.influxdata.com/
+
+### Application environment variables
+- ``DBNAME`` - Database name
+- ``INPUT`` - Input file
+- ``TIMECOLUMN`` - Timestamp column name. Default: timestamp
+- ``SERVER`` - Server address. Default: localhost:8086
+- ``TIME_SECCONDS`` - The value defines the time intervals between successive file uploads.
+
+### Application installation (local)
+
+- Run project:
 ```
 $ docker-compose pull
 $ docker-compose build
 $ docker-compose up
 ```
 
-Użytkownik na grafanę (http://localhost:3000/):  
-test/test
+## Deployment
 
-Instalacja requirements.txt:  
-```
-pip install -r requirements.txt
-```
-
-Przykłady wykorzystaina skryptu (bez dockera):
-```
-$ python csv-to-influxdb.py --input dane_meteo_2011_05_Bialowieza.xlsx --dbname csv --create --timecolumn data/godzina -tf "%Y-%m-%d %H:%M:%S" -d ";"
-```
-
-```
-$ python csv-to-influxdb.py --input dane_meteo_2011_05_Bialowieza.xlsx --dbname csv --create --timecolumn data/godzina -tf "%Y-%m-%d %H:%M:%S" -d ";" --fieldcolumns "wilg,temp >2m,ciś,opad,nasłon,temp < 2m,pokrywa śnieżna,temp <2m min,temp <2m max,Vwmax,Vwsr,Vwmin,kierunek wsr,kierunek wmax,kierunek wmin"
-```
+## Contribution
+The project was performed by Whiteaster sp.z o.o., with register office in Chorzów, Poland - www.whiteaster.com and provided under the GNU GPL v.3 license to the Contracting Entity - Mammal Research Institute Polish Academy of Science in Białowieża, Poland.We are proud to release this project under an Open Source license. If you want to share your comments, impressions or simply contact us, please write to the following e-mail address: info@whiteaster.com
