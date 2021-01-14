@@ -52,5 +52,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     load_csv(args.input, args.server, args.user, args.password, args.dbname,
              args.metricname, args.timecolumn, args.timeformat, args.tag_columns,
-             args.field_columns, args.delimiter, args.batchsize, args.create,
+             args.field_columns, args.delimiter, args.batchsize, False,
              args.timezone, args.ssl)

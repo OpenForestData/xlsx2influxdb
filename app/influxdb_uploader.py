@@ -1,4 +1,3 @@
-import argparse
 import csv
 import datetime
 import logging
@@ -7,9 +6,9 @@ import re
 import sys
 
 import chardet
+import pandas as pd
 from influxdb import InfluxDBClient
 from pytz import timezone
-from xlsx2csv import Xlsx2csv
 
 epoch_naive = datetime.datetime.utcfromtimestamp(0)
 epoch = timezone('UTC').localize(epoch_naive)
@@ -28,7 +27,7 @@ def is_float(value):
     """
 
     try:
-        float(value)
+        float(value.replace(' ', '').replace(',', '.'))
         return True
     except:
         return False
@@ -79,17 +78,25 @@ def convert_to_csv(input_filename):
 
     :param input_filename: Excel file to convert to CSV
     """
-    Xlsx2csv(input_filename, outputencoding="cp1250").convert("temp.csv")
 
-    with open('temp.csv', 'r', encoding='ISO-8859-1') as file_r, open(
-            "file_" + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M") + ".csv", 'w') as file_w:
-        for line in file_r:
-            line = line.split(',')
-            line[0] = re.sub("'", '', line[0])
-            line = ','.join(line)
-            file_w.write(line)
+    # with open(input_filename) as file:
+    #     lines = file.readlines()
+    #     for line in lines:
+    #         print(line)
+    read_file = pd.read_csv(input_filename, sep="\t")
+    filename = "file_" + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M") + ".csv"
+    read_file.to_csv(filename, index=None, sep=",")
 
-    os.remove("temp.csv")
+    # with open('temp.csv', 'r', encoding='ISO-8859-1') as file_r, open(
+    #         "file_" + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M") + ".csv", 'w') as file_w:
+    #     for line in file_r:
+    #         line = line.split(',')
+    #         line[0] = re.sub("'", '', line[0])
+    #         line = ','.join(line)
+    #         file_w.write(line)
+
+    # os.remove("temp.csv")
+    return filename
 
 
 def set_logger():
@@ -129,12 +136,13 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
     # open csv
     datapoints = []
     # input_file = "file_" + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M") + ".csv"
-    input_file = input_filename
-    with open(input_file, 'rb') as file:
-        encoding = chardet.detect(file.read())
+    input_filename = convert_to_csv(input_filename)
+    # input_file = name
+    # with open(input_file, 'rb') as file:
+    #     encoding = chardet.detect(file.read())
     count = 0
-    with open(input_file, encoding=encoding['encoding']) as csv_file:
-        reader = csv.DictReader(csv_file, delimiter=delimiter)
+    with open(input_filename) as csv_file:
+        reader = csv.DictReader(csv_file, delimiter=',')
         for row in reader:
             datetime_naive = datetime.datetime.strptime(row[timecolumn].replace("'", ''), timeformat)
 
@@ -157,7 +165,7 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
                 v = 0
                 if f in row:
                     if is_float(row[f]):
-                        v = float(row[f])
+                        v = float(row[f].replace(' ', '').replace(',', '.'))
                     elif is_bool(row[f]):
                         v = str2bool(row[f])
                     else:
@@ -191,8 +199,8 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
         if not response:
             logging.error('Problem inserting points, exiting...')
             exit(1)
-
+        else:
+            os.remove(input_filename)
         logging.info("Wrote %d, response: %s" % (len(datapoints), response))
 
     logging.info('Done')
-
