@@ -29,6 +29,6 @@ echo "================="
 
 while true
 do
-    python /app/main.py --server $SERVER --dbname $DBNAME --input $INPUT --timecolumn $TIMECOLUMN -d ";" --field_columns "wilg,temp >2m,ciś,opad,nasłon,temp < 2m,pokrywa śnieżna,temp <2m min,temp <2m max,Vwmax,Vwsr,Vwmin,kierunek wsr,kierunek wmax,kierunek wmin" --timeformat "%Y-%m-%d %H:%M:%S"
+    python /app/main.py --server $SERVER --dbname $DBNAME --input $INPUT --timecolumn $TIMECOLUMN -d "t" --field_columns "wilg,temp >2m,ciś,opad,nasłon,temp < 2m,pokrywa śnieżna,temp <2m min,temp <2m max,Vwmax,Vwsr,Vwmin,kierunek wsr,kierunek wmax,kierunek wmin" --timeformat "%Y-%m-%d %H:%M:%S"
     sleep $TIME_SECCONDS
 done
