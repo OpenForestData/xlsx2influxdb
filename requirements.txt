@@ -10,3 +10,4 @@ six==1.14.0
 urllib3==1.25.8
 xlsx2csv==0.7.6
 zope.interface==5.0.2
+pandas==1.2.0
