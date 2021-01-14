@@ -115,6 +115,7 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
 
     host = servername[0:servername.rfind(':')]
     port = int(servername[servername.rfind(':') + 1:])
+    logging.info('Logging to db: %s' % dbname)
     client = InfluxDBClient(host, port, user, password, dbname, ssl=usessl)
 
     if create:
