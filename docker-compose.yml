@@ -10,7 +10,7 @@ services:
       - SQLITE_DB_NAME=test3
       - INPUT=/app/Bialowieza_2021.txt
       - TIMECOLUMN=date
-      - SERVER=localhost:8086
+      - SERVER=172.17.0.1:8086
       - TIME_SECCONDS=600
     volumes:
       - "./Bialowieza_2021.txt:/app/Bialowieza_2021.txt"
