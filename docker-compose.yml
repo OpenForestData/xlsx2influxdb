@@ -7,6 +7,8 @@ services:
     restart: unless-stopped
     environment:
       - DBNAME=test3
+      - DBUSER=dev
+      - DBPASSWORD=dev1234
       - SQLITE_DB_NAME=test3
       - INPUT=/app/Bialowieza_2021.txt
       - TIMECOLUMN=date
