@@ -1,5 +1,8 @@
 image: python:3.8-slim
 
+stages:
+    - build image
+
 .build_template: &build
     image:
         name: gcr.io/kaniko-project/executor:debug
