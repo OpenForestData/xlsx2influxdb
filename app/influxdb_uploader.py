@@ -2,10 +2,8 @@ import csv
 import datetime
 import logging
 import os
-import re
 import sys
 
-import chardet
 import pandas as pd
 from influxdb import InfluxDBClient
 from pytz import timezone
