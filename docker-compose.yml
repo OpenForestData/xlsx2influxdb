@@ -6,8 +6,8 @@ services:
     container_name: "xlsx2influxdb"
     restart: unless-stopped
     environment:
-      - DBNAME=test3
-      - SQLITE_DB_NAME=test3
+      - DBNAME=data
+      - SQLITE_DB_NAME=data
       - INPUT=/app/Bialowieza_2021.txt
       - TIMECOLUMN=date
       - SERVER=172.17.0.1:8086
