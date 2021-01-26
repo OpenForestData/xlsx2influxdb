@@ -158,7 +158,23 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
                 if t in row:
                     v = row[t]
                 tags[t] = v
-
+            mapping = {
+                'U200': 'Wilgotność',
+                'T200': "Temperatura powyżej 2 metrów",
+                'Vwmax': 'Prędkość wiatru maksymalna',
+                'Vwmin': 'Prędkośc wiatru minimalna',
+                'Vwsred': "Prędkośc wiatru średnia",
+                'Kw': 'Kierunek wiatru',
+                'Kwmax': 'Kierunek wiatru maksymalny',
+                'Kwsred': 'Kierunek wiatru sredni',
+                'Kwmin': 'Kierunek wiatru minimalny',
+                'Op': 'Opad',
+                'T5': 'Temperatura przy gruncie',
+                'Press': "Ciśnienie",
+                'Irr_dur': "Czas nasłonecznienia",
+                'T5max': "Temperatura przy gruncie maksymalna",
+                'T5min': "Temperatura przy gruncie minimalna"
+            }
             fields = {}
             for f in field_columns:
                 v = 0
@@ -169,6 +185,7 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
                         v = str2bool(row[f])
                     else:
                         v = row[f]
+                f = mapping.get(f, f)
                 fields[f] = v
 
             point = {"measurement": metric, "time": timestamp, "fields": fields, "tags": tags}
@@ -203,3 +220,6 @@ def load_csv(input_filename, servername, user, password, dbname, metric,
         logging.info("Wrote %d, response: %s" % (len(datapoints), response))
 
     logging.info('Done')
+
+# TODO:
+# Harmonogram - > przedstawić wstępny harmonogram (mogą się odbyć dwa w jeden dzień)
