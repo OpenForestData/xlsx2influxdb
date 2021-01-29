@@ -29,6 +29,6 @@ echo "================="
 
 while true
 do
-    python /app/main.py --server $SERVER --dbname $DBNAME --input $INPUT --timecolumn $TIMECOLUMN -d "t" --field_columns "U200,T200,Vwmin,Vwmax,Vwsred,Kwmin,Kwmax,Kwsred,T5,T5max,T5min,Op,Press,Irr_dur" --timeformat "%Y-%m-%d %H:%M:%S"
+    python /app/main.py --server $SERVER --dbname $DBNAME -u "meteo" -p "STP1quARSPec" --input $INPUT --timecolumn $TIMECOLUMN -d "t" --field_columns "U200,T200,Vwmin,Vwmax,Vwsred,Kwmin,Kwmax,Kwsred,T5,T5max,T5min,Op,Press,Irr_dur" --timeformat "%Y-%m-%d %H:%M:%S"
     sleep $TIME_SECCONDS
 done
